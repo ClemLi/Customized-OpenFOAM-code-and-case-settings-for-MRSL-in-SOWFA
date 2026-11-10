@@ -1,0 +1,5 @@
+# mkdir planeSectioning
+module load 2024
+module load VirtualGL/3.1.1-GCC-13.3.0
+module load ParaView/5.13.2-foss-2024a
+vglrun paraview
