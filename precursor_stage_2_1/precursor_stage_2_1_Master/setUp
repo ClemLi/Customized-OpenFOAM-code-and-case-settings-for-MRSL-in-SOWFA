@@ -1,0 +1,21 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  6.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+// Domain size and number of cells.
+// * Used by blockMesh in 'constant/polyMesh/blockMeshDict'
+//
+// - This creates a simple uniform hexahedral mesh
+
+#include        "./setUpMaster"
+
+zInversion                  750.0;                 // Height of the middle of the initial strong capping inversion (m).
+
+// Surface conditions.
+// * Used by solver in '0/Rwall' and '0/qwall'
+qwall               (0.0 0.0 0.0);                // Temperature flux at wall (modify the z-value).  A negative value is flux into domain (K-m/s).
+
