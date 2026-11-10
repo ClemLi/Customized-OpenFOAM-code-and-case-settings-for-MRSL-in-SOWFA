@@ -1,0 +1,20 @@
+
+    onlineStats
+    {
+
+        libs            ( "<yourPATH>/libonlineStatsOF6.so" );
+        type            onlineStatsOF6;
+
+
+        enabled         true;
+        log             true;
+
+        executeControl  timeStep;
+        executeInterval 1;
+
+        writeControl    adjustableRunTime;
+        writeInterval   1800;
+
+        timeStart       36000;
+        timeEnd         43200;
+    }

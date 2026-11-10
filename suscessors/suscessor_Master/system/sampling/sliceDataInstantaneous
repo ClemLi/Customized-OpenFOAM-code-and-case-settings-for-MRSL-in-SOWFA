@@ -1,0 +1,57 @@
+sliceDataInstantaneous
+{
+    type                 surfaces;
+    timeStart            36000;
+    timeEnd              43200;
+    functionObjectLibs   ("libsampling.so");
+    enabled              true;
+    interpolationScheme  cellPointFace;
+    writeControl         adjustableRunTime;
+    writeInterval        20;
+    surfaceFormat        vtk;
+    fields
+    (
+        U
+        T
+        p_rgh
+        k
+        nut
+        force.disk_11
+    );
+    surfaces
+    (
+        zPlane_182_5
+        {
+            type         plane;
+            planeType    pointAndNormal;
+            pointAndNormalDict
+            {
+                basePoint    (1505.01 1505.01 182.51);
+                normalVector (0 0 1);
+            }
+            triangulate  true;
+        }
+        streamWise_2500
+        {
+            type         plane;
+            planeType    pointAndNormal;
+            pointAndNormalDict
+            {
+                basePoint    (2505.01 2505.01 182.51);
+                normalVector (1 1 0);
+            }
+            triangulate  true;
+        }
+        lateral_1500
+        {
+            type         plane;
+            planeType    pointAndNormal;
+            pointAndNormalDict
+            {
+                basePoint    (1505.01 1505.01 182.51);
+                normalVector (-1 1 0);
+            }
+            triangulate  true;
+        }
+    );
+}

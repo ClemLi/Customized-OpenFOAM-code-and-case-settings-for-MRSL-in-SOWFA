@@ -1,0 +1,157 @@
+    derivedFieldsOF6
+    {
+        name derivedFieldsOF6Impl;
+
+        type coded;
+        libs ("libutilityFunctionObjects.so");
+
+        enabled         true;
+        log             true;
+
+        executeControl  timeStep;
+        executeInterval 1;
+
+        writeControl         adjustableRunTime;
+        writeInterval        1800;
+
+        codeExecute
+        #{
+        
+            const fvMesh& mesh = refCast<const fvMesh>(obr_);
+
+            // Fields need to be read
+            const volVectorField& U = mesh.lookupObject<volVectorField>("U");
+            const volScalarField& kappatIn = mesh.lookupObject<volScalarField>("kappat");
+            const volScalarField& nutIn = mesh.lookupObject<volScalarField>("nut");
+            const volScalarField& TIn = mesh.lookupObject<volScalarField>("T");
+
+            volTensorField gradUIn = fvc::grad(U);
+            volVectorField gradTIn = fvc::grad(TIn);
+
+
+            // --- inputs uMagSqr
+
+            volScalarField* uMAGSqrPtr = nullptr;
+
+            if (mesh.foundObject<volScalarField>("uMAGSqr"))
+            {
+                uMAGSqrPtr = const_cast<volScalarField*>
+                (
+                &mesh.lookupObject<volScalarField>("uMAGSqr")
+                );
+            }
+            else
+            {
+                uMAGSqrPtr = new volScalarField
+                (
+                    IOobject
+                    (
+                        "uMAGSqr",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::NO_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    magSqr(U)
+                );
+
+                mesh.objectRegistry::store(uMAGSqrPtr);
+            }
+
+            // --- UPDATE persistent field
+            *uMAGSqrPtr = magSqr(U);
+            uMAGSqrPtr->correctBoundaryConditions();
+
+            // --- Only write on solver write times
+            if (mesh.time().writeTime())
+            {
+                uMAGSqrPtr->write();
+            }
+
+
+
+            // --- inputs tau_sgs
+
+            volSymmTensorField* tauSGSPtr = nullptr;
+
+            if (mesh.foundObject<volSymmTensorField>("tauSGS"))
+            {
+                tauSGSPtr = const_cast<volSymmTensorField*>
+                (
+                &mesh.lookupObject<volSymmTensorField>("tauSGS")
+                );
+            }
+            else
+            {
+                tauSGSPtr = new volSymmTensorField
+                (
+                    IOobject
+                    (
+                        "tauSGS",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::NO_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    - 2.0 * nutIn * symm(gradUIn)
+                );
+
+                mesh.objectRegistry::store(tauSGSPtr);
+            }
+
+            // --- UPDATE persistent field
+            *tauSGSPtr = - 2.0 * nutIn * symm(gradUIn);
+            tauSGSPtr->correctBoundaryConditions();
+
+            // --- Only write on solver write times
+            if (mesh.time().writeTime())
+            {
+                tauSGSPtr->write();
+            }
+
+
+
+
+            // --- inputs q_sgs
+
+            volVectorField* qSGSPtr = nullptr;
+
+            if (mesh.foundObject<volVectorField>("qSGS"))
+            {
+                qSGSPtr = const_cast<volVectorField*>
+                (
+                &mesh.lookupObject<volVectorField>("qSGS")
+                );
+            }
+            else
+            {
+                qSGSPtr = new volVectorField
+                (
+                    IOobject
+                    (
+                        "qSGS",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::NO_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    - kappatIn * gradTIn
+                );
+
+                mesh.objectRegistry::store(qSGSPtr);
+            }
+
+            // --- UPDATE persistent field
+            *qSGSPtr = - kappatIn * gradTIn;
+            qSGSPtr->correctBoundaryConditions();
+
+            // --- Only write on solver write times
+            if (mesh.time().writeTime())
+            {
+                qSGSPtr->write();
+            }
+
+
+
+        #};
+    }

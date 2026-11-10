@@ -1,0 +1,90 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "./parameterMRSLMaster"
+
+#include                   "./constant/ALPosition/ALPosition_11"
+#include                   "./constant/rotorALPosition/rotorALElementPosition_11"
+#include                   "./constant/rotorALEleSmearLengthX"
+#include                   "./constant/rotorALEleSmearLengthY"
+#include                   "./constant/rotorALEleSmearLengthZ"
+#include                   "./constant/rotorALEleFrontalArea"
+#include                   "./constant/bladeSmearLengthList"
+
+
+// column First
+
+disk_11
+{
+
+    type                       flyingActuationDiskSource;
+    fields                     (U);
+    selectionMode              cellSet;
+    cellSet                    $cellSetMaster_11;
+    outPutTimeStart            $outPutTimeStartMaster;
+    writeInterval              $writeIntervalMaster;
+    timeStepToCheck            $timeStepToCheckMaster;
+
+    bladeActuatorPointsPositions  $bladeActuatorPointsPositionsMaster;
+    rotorActuatorPointsPositions  $rotorActuatorPointsPositionsMaster;
+
+    diskArea                   $diskAreaMaster;   // 300 * 300 square
+    widthOfDisk                $widthOfDiskMaster;
+    heightOfDisk               $heightOfDiskMaster;
+    freeStreamDir              $freeStreamDirMaster;           //(1 0 0);
+    diskDir                    $diskDirMaster;           //  (1 0 0); //rotorDir
+    
+
+    rotorCtStar                $rotorCtStarMaster;           //Ct = 0.7  a ~= 0.226 maybe should be Ct star
+    rotorSmearingLengthX       $rotorSmearingLengthXMaster;
+    rotorSmearingLengthY       $rotorSmearingLengthYMaster;
+    rotorSmearingLengthZ       $rotorSmearingLengthZMaster;
+    rotorFrontalAreaPerCell    $rotorFrontalAreaPerCellMaster;
+
+
+    bladeSmearingLength        $bladeSmearingLengthMaster;
+    alphaVSClCd                $alphaVSClCdMaster;
+    
+    bladeNumber                $bladeNumberMaster;
+    bladeChord                 $bladeChordMaster;
+    bladeSpanPerAL             $bladeSpanPerALMaster;
+    lateralDirection           $lateralDirectionMaster;   // (0 -1 0) push the flow upward, (0 1 0) push the flow downward
+    bladePitch                 $bladePitchMaster;     // around 15 Deg , 2 pi sin(0.2618) ~= 1.626
+    bladeTwist                 $bladeTwistMaster;
+
+    velSamplingRadiusCoeff     $velSamplingRadiusCoeffMaster;  // factor
+    velSamplingNumber          $velSamplingNumber;
+
+
+    bladeNumIndicator          $bladeNumIndicatorMaster;
+    bladeAOATarget             $bladeAOATargetMaster;
+    indexForBladeMid           $indexForBladeMidMaster;
+    timeStartAdjustPitch       $timeStartAdjustPitchMaster;
+    bladePitchTol              $bladePitchTolMaster;
+    bladePitchSpeed            $bladePitchSpeedMaster;
+    bladePitchTimeScale        $bladePitchTimeScaleMaster;
+
+    rotorNumberofActuatorPointsExpected   $rotorNumberofActuatorPointsExpectedMaster;
+    bladeNumberofActuatorPointsExpected   $bladeNumberofActuatorPointsExpectedMaster;
+
+
+}
+
+
+
+
+// ************************************************************************* //

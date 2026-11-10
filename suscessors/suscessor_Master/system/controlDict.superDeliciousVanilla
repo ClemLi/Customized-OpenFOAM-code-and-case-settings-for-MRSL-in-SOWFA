@@ -1,0 +1,96 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+  application       superDeliciousVanilla;
+
+  libs              
+  (
+      "libSOWFAboundaryConditions.so"
+      "libSOWFAincompressibleTurbulenceModels.so"
+      "<yourPATH>/platform/libflyingActuationDiskSource.so"
+      "<yourPATH>/libonlineStatsOF6.so"
+  );
+
+
+  startFrom         startTime;
+
+  startTime         36000.0;
+
+  stopAt            endTime;
+
+  endTime           41400.0;
+
+  deltaT            0.24;
+
+  writeControl      timeStep;
+
+  writeInterval     7500;
+
+  purgeWrite        0;
+
+  writeFormat       ascii;
+
+  writePrecision    12;
+
+  writeCompression  uncompressed;
+
+  timeFormat        general;
+
+  timePrecision     7;
+
+  runTimeModifiable yes;
+
+  adjustTimeStep    no;
+
+  functions
+  {
+    #include "sampling/moreFields"
+
+    #include "sampling/temporalAveragesCustomized"
+
+
+    // The sampling below consumes large amount of disk space, enable it if one is interested
+    // With the current settings, it requires about but (but less than) 1 TB per case
+
+    /*
+    #include "sampling/sliceDataInstantaneous"
+
+    // See 4TU.ResearchData repository for the smapling files for probes.
+    #include "sampling/probesStreamWise_m02"
+    #include "sampling/probesStreamWise_m01"
+    #include "sampling/probesStreamWise_p00"
+
+    #include "sampling/probesStreamWise_p01"
+    #include "sampling/probesStreamWise_p02"
+    #include "sampling/probesStreamWise_p03"
+    #include "sampling/probesStreamWise_p04"
+    #include "sampling/probesStreamWise_p05"
+
+    #include "sampling/probesStreamWise_p06"
+    #include "sampling/probesStreamWise_p07"
+    #include "sampling/probesStreamWise_p08"
+    #include "sampling/probesStreamWise_p09"
+    #include "sampling/probesStreamWise_p10"
+
+    #include "sampling/probesLateral"
+    */
+  }
+
+// ************************************************************************* //
+

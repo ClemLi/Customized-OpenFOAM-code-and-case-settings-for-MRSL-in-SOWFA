@@ -1,0 +1,101 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+// This is a file to master the parameters
+
+
+// constant/fvOptions
+
+outPutTimeStartMaster            0;
+writeIntervalMaster              200;
+timeStepToCheckMaster            1;
+
+bladeNumberMaster                4;
+
+
+freeStreamDirMaster              ( 0.707107  0.707107  0);
+diskDirMaster                    ( 0.707107  0.707107  0);
+lateralDirectionMaster           ( 0.707107 -0.707107  0);   // (1 -1 0) push the flow upward, (-1 1 0) push the flow downward
+
+
+#include                         "./constant/bladePtichList"
+
+#include                         "./constant/bladeTwistList"
+
+#include                         "./constant/bladeNumIndicatorList"
+
+bladeAOATargetMaster
+(
+    -8.50
+    -8.50
+    -8.50
+    -8.50
+);
+
+indexForBladeMidMaster
+(
+    15
+    45
+    75
+   105
+);
+
+timeStartAdjustPitchMaster       36100.0;
+bladePitchTolMaster              0.1;
+bladePitchSpeedMaster            0.5;   // deg/sec
+bladePitchTimeScaleMaster        30.0;  // sec
+
+
+bladeChordMaster                 37.5;         // 40 * 40 * pi / 80 / 4 wings / 2 (ratio of rotor surface to span surface is 2:1) ~= 7.85
+bladeSpanPerALMaster             10.0;
+
+
+widthOfDiskMaster                300;
+heightOfDiskMaster               300;
+diskAreaMaster                   90000;   // 40 * 40 * pi
+
+
+rotorRadiusMaster                150;
+
+rotorFrontalAreaPerCellMaster    "rotorALEleFrontalArea";
+
+rotorTopMaster                   332.51;       //m
+rotorBottomMaster                 32.51;       //m
+
+rotorCtStarMaster                1.168;     //Ct = 0.8  a ~= 0.276   this variable is Ct star
+
+
+velSamplingRadiusCoeffMaster     1.5;  // factor, multiplying the absolute size of blade smearing length
+
+velSamplingNumber                20;
+
+alphaVSClCDMaster                "polarDataNegS1223_Re_2e7";
+
+bladeSmearingLengthMaster        "bladeSmearLengthList";
+
+rotorSmearingLengthXMaster        "rotorALEleSmearLengthX";
+rotorSmearingLengthYMaster        "rotorALEleSmearLengthY";
+rotorSmearingLengthZMaster        "rotorALEleSmearLengthZ";
+
+
+rotorNumberofActuatorPointsExpectedMaster  900;
+bladeNumberofActuatorPointsExpectedMaster  120;
+
+
+cellSetMaster_11                 "actuationDisk1";
+
+ALPosition_11                    "ALPosition/ALPosition_11";
+
+
+rotorALPosition_11               "rotorALPosition/rotorALElementPosition_11";
+
+
+bladeHeightFirst                 332.51;
+bladeHeightSecond                257.51;
+bladeHeightThird                 182.51;
+bladeHeightForth                 107.51;
