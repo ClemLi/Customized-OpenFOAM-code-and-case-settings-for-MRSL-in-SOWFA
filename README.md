@@ -11,7 +11,7 @@ Y. Li, A. Sciacchitano, and W. Yu, 2026 (Accepted by Wind Energy Science),  Effe
 
 This GitHub repository contains a subset of the "caseSettingsAndCodes" folder from the dataset archived on 4TU.ResearchData. It has been created to facilitate convenient access to and reuse of the code. See https://doi.org/10.4121/ef3ef4c3-1158-4e8b-a872-4432cf124087 for further documentation.
 
-The customized library can also serve as a general-purpose actuator disk model with force-smearing capabilities. It demonstrates excellent parallel scalability with negligible computational overhead, achieved by restricting the search domains used for velocity sampling and body-force application.
+The customized library in "sourceCodeMRSL" can also serve as a general-purpose actuator disk model with force-smearing capabilities. It demonstrates excellent parallel scalability with negligible computational overhead, achieved by restricting the search domains used for velocity sampling and body-force application. Particular care has been taken to ensure that the body forces are correctly distributed, even when the smearing kernel spans multiple processor domains. However, actuator elements should not be placed exactly on computational cell faces or edges, as this may introduce ambiguity in determining which processor owns the actuator element, potentially leading to a segmentation fault during execution.
 
 ################################
 
